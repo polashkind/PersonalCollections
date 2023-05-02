@@ -63,7 +63,7 @@ namespace PersonalCollections.Migrations
                     Title = table.Column<string>(type: "text", nullable: false),
                     Description = table.Column<string>(type: "text", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    Likes = table.Column<string>(type: "text", nullable: false),
+                    Likes = table.Column<int>(type: "integer", nullable: false),
                     CollectionId = table.Column<int>(type: "integer", nullable: false),
                     CommentId = table.Column<int>(type: "integer", nullable: false)
                 },

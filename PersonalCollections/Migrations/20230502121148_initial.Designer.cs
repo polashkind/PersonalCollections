@@ -12,7 +12,7 @@ using PersonalCollections.Data;
 namespace PersonalCollections.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20230502093138_initial")]
+    [Migration("20230502121148_initial")]
     partial class initial
     {
         /// <inheritdoc />
@@ -91,9 +91,8 @@ namespace PersonalCollections.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<string>("Likes")
-                        .IsRequired()
-                        .HasColumnType("text");
+                    b.Property<int>("Likes")
+                        .HasColumnType("integer");
 
                     b.Property<string>("Title")
                         .IsRequired()
