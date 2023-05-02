@@ -9,7 +9,7 @@ namespace PersonalCollections.Models
         public string Title { get; set; }
         public string Description { get; set; }
         public DateTime CreatedAt { get; set; }
-        public string Likes { get; set; }
+        public int Likes { get; set; }
 
         public int CollectionId { get; set; }
         [ForeignKey("CollectionId")]
