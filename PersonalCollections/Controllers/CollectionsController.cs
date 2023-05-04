@@ -19,8 +19,8 @@ namespace PersonalCollections.Controllers
 
         public async Task<IActionResult> Index()
         {
-            var allCollections = await _context.Collections.ToListAsync();
-            return View();
+            var allCollections = await _context.Collections.Include(n => n.Items).ToListAsync();
+            return View(allCollections);
         }
     }
 }
