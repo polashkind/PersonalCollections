@@ -20,7 +20,7 @@ namespace PersonalCollections.Controllers
         public async Task<IActionResult> Index()
         {
             var allComments = await _context.Comments.ToListAsync();
-            return View();
+            return View(allComments);
         }
     }
 }

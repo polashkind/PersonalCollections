@@ -19,7 +19,7 @@ namespace PersonalCollections.Controllers
         public async Task<IActionResult> Index()
         {
             var allTags = await _context.Tags.ToListAsync();
-            return View();
+            return View(allTags);
         }
     }
 }
