@@ -9,9 +9,11 @@ namespace PersonalCollections.Models
 		public int Id { get; set; }
 
         [Display(Name = "Title")]
+        [Required(ErrorMessage = "Title is required")]
         public string Title { get; set; }
 
         [Display(Name = "Description")]
+        [Required(ErrorMessage = "Description is required")]
         public string Description { get; set; }
 
         [Display(Name = "Created")]
