@@ -1,6 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using PersonalCollections.Data;
 using Npgsql.EntityFrameworkCore.PostgreSQL;
+using PersonalCollections.Data.Services;
+using PersonalCollections.Data.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,6 +12,8 @@ builder.Services.AddControllersWithViews();
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseNpgsql(connectionString));
+builder.Services.AddScoped<IItemsService, ItemsService>();
+builder.Services.AddScoped<ICollectionsService, CollectionsService>();
 
 builder.Services.AddSwaggerGen();
 
