@@ -1,5 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using PersonalCollections.Models;
+using PersonalCollections.Data.ViewModels;
 
 namespace PersonalCollections.Data.Interfaces
 {
@@ -9,7 +13,11 @@ namespace PersonalCollections.Data.Interfaces
 		Task<Item> GetById(int id, CancellationToken cancellationToken);
         Task<Item?> Create(Item item, CancellationToken cancellationToken);
         Task Delete(Item item, CancellationToken cancellationToken);
-        Task<Item?> Update(Item item, CancellationToken cancellationToken);
+
+        Task Update(NewItemVM data);
+
+        Task<NewItemDropdownsVM> GetNewItemDropdownsValues();
     }
 }
 
+ 
