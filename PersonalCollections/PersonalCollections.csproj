@@ -14,6 +14,10 @@
     <None Remove="Views\Items\" />
     <None Remove="Views\Comments\" />
     <None Remove="Views\Tags\" />
+    <None Remove="Data\Services\" />
+    <None Remove="Data\Interfaces\" />
+    <None Remove="Data\Static\" />
+    <None Remove="Data\ViewModels\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Data\" />
@@ -21,6 +25,10 @@
     <Folder Include="Views\Items\" />
     <Folder Include="Views\Comments\" />
     <Folder Include="Views\Tags\" />
+    <Folder Include="Data\Services\" />
+    <Folder Include="Data\Interfaces\" />
+    <Folder Include="Data\Static\" />
+    <Folder Include="Data\ViewModels\" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.5" />
@@ -33,5 +41,6 @@
     <PackageReference Include="Swashbuckle.AspNetCore.SwaggerUI" Version="6.5.0" />
     <PackageReference Include="Swashbuckle.AspNetCore.SwaggerGen" Version="6.5.0" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="7.0.6" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="7.0.5" />
   </ItemGroup>
 </Project>

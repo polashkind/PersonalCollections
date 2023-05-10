@@ -5,22 +5,52 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PersonalCollections.Data;
+using PersonalCollections.Data.Interfaces;
+using PersonalCollections.Models;
 
 namespace PersonalCollections.Controllers
 {
     public class CollectionsController : Controller
     {
-        private readonly AppDbContext _context;
+        private readonly ICollectionsService _service;
 
-        public CollectionsController(AppDbContext context)
+        public CollectionsController(ICollectionsService service)
         {
-            _context = context;
+            _service = service;
         }
 
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(CancellationToken cancellationToken)
         {
-            var allCollections = await _context.Collections.Include(n => n.Items).ToListAsync();
-            return View(allCollections);
+            var result = await _service.GetAll(cancellationToken);
+            return View(result);
+        }
+
+        public IActionResult Create()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Create(Collection collection, CancellationToken cancellationToken)
+        {
+            if (!ModelState.IsValid)
+            {
+                foreach (var error in ModelState.Values.SelectMany(v => v.Errors))
+                {
+                    Console.WriteLine(error.ErrorMessage);
+                }
+                return View(collection);
+            }
+            await _service.Create(collection, cancellationToken);
+            return RedirectToAction(nameof(Index));
+        }
+
+        public async Task<IActionResult> Details(int id, CancellationToken cancellationToken)
+        {
+            var collectionDetails = await _service.GetById(id, cancellationToken);
+
+            if (collectionDetails == null) return View("Empty");
+            return View(collectionDetails);
         }
     }
 }
