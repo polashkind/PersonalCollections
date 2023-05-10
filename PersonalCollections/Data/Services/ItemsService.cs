@@ -3,26 +3,27 @@ using System.Threading;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PersonalCollections.Data.Interfaces;
+using PersonalCollections.Data.ViewModels;
 using PersonalCollections.Models;
 
 namespace PersonalCollections.Data.Services
 {
-	public class ItemsService : IItemsService
-	{
-		private readonly AppDbContext _context;
+    public class ItemsService : IItemsService
+    {
+        private readonly AppDbContext _context;
         protected readonly DbSet<Item> _dbSet;
 
         public ItemsService(AppDbContext context)
-		{
-			_context = context;
+        {
+            _context = context;
             _dbSet = _context.Set<Item>();
         }
 
-		public async Task<IEnumerable<Item>> GetAll(CancellationToken cancellationToken)
-		{
-			var result = await _dbSet.AsNoTracking().Include(i => i.Collection).Include(ic => ic.Comments).ToListAsync(cancellationToken);
-			return result;
-		}
+        public async Task<IEnumerable<Item>> GetAll(CancellationToken cancellationToken)
+        {
+            var result = await _dbSet.AsNoTracking().Include(i => i.Collection).Include(ic => ic.Comments).ToListAsync(cancellationToken);
+            return result;
+        }
 
         public async Task<Item> GetById(int id, CancellationToken cancellationToken)
         {
@@ -43,14 +44,30 @@ namespace PersonalCollections.Data.Services
             await _context.SaveChangesAsync(cancellationToken);
         }
 
-        public async Task<Item?> Update(Item item, CancellationToken cancellationToken)
+        public async Task<NewItemDropdownsVM> GetNewItemDropdownsValues()
         {
-            _context.Entry(item).State = EntityState.Modified;
-            _dbSet.Update(item);
-            await _context.SaveChangesAsync(cancellationToken);
-            return item;
+            var response = new NewItemDropdownsVM()
+            {
+                Collections = await _context.Collections.OrderBy(c => c.Title).ToListAsync(),
+            };
+
+            return response;
         }
 
+        public async Task Update(NewItemVM data)
+        {
+
+            var dbItem = await _context.Items.FirstOrDefaultAsync(i => i.Id == data.Id);
+
+            if (dbItem != null)
+            {
+                dbItem.Title = data.Title;
+                dbItem.Description = data.Description;
+                dbItem.CollectionId = data.CollectionId;
+                await _context.SaveChangesAsync();
+            }
+
+        }
     }
 }
 
