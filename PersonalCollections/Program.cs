@@ -1,8 +1,10 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using PersonalCollections.Data;
 using Npgsql.EntityFrameworkCore.PostgreSQL;
 using PersonalCollections.Data.Services;
 using PersonalCollections.Data.Interfaces;
+using Microsoft.AspNetCore.Identity;
+using PersonalCollections.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,6 +16,7 @@ builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseNpgsql(connectionString));
 builder.Services.AddScoped<IItemsService, ItemsService>();
 builder.Services.AddScoped<ICollectionsService, CollectionsService>();
+builder.Services.AddIdentity<ApplicationUser, IdentityRole>().AddEntityFrameworkStores<AppDbContext>();
 
 builder.Services.AddSwaggerGen();
 
@@ -35,14 +38,17 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+    pattern: "{controller=Collections}/{action=Index}/{id?}");
 
 //seed database
 AppDbInitilizer.Seed(app);
+//seed roles
+AppDbInitilizer.SeedRolesAsync(app).Wait();
 
 app.Run();
 
