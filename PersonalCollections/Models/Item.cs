@@ -1,12 +1,17 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using PersonalCollections.Data.Enums;
 
 namespace PersonalCollections.Models
 {
 	public class Item
 	{
 		public int Id { get; set; }
+
+        [Display(Name = "Subject")]
+        [Required(ErrorMessage = "Subject is required")]
+        public ItemType Subject { get; set; }
 
         [Display(Name = "Title")]
         [Required(ErrorMessage = "Title is required")]
@@ -16,21 +21,44 @@ namespace PersonalCollections.Models
         [Required(ErrorMessage = "Description is required")]
         public string Description { get; set; }
 
-        [Display(Name = "Created")]
+
+        // relationship
+        public List<Collection>? Collection { get; set; }
+
+
+        [Display(Name = "Create date")]
         public DateTime CreatedAt { get; set; }
 
-        [Display(Name = "Likes")]
-        public int Likes { get; set; }
+        [Display(Name = "Update date")]
+        public DateTime UpdatedAt { get; set; }
 
-        public int CollectionId { get; set; }
-        [ForeignKey("CollectionId")]
-        public Collection Collection { get; set; }
+        public string CreatedByUserId { get; set; }
+        public virtual ApplicationUser CreatedBy { get; set; }
 
-        public List<Tag_Item> Tags_Items { get; set; }
+        public string UpdatedByUserId { get; set; }
+        public virtual ApplicationUser UpdatedBy { get; set; }
 
-        public int CommentId { get; set; }
-        [ForeignKey("CommentId")]
-        public Comment Comments { get; set; }
+
+        // Book
+        [Display(Name = "Author")]
+        public string? Author { get; set; }
+
+        [Display(Name = "Genre")]
+        public string? BookGenre { get; set; }
+
+        [Display(Name = "Year of publication")]
+        public DateOnly? Year { get; set; }
+
+        // Car
+        [Display(Name = "Brand")]
+        public string? Brand { get; set; }
+
+        // Movie
+        [Display(Name = "Producer")]
+        public string? Producer { get; set; }
+
+        [Display(Name = "Genre")]
+        public string? MovieGenre { get; set; }
     }
 }
 

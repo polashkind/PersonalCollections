@@ -12,8 +12,6 @@
     <None Remove="Data\" />
     <None Remove="Views\Collections\" />
     <None Remove="Views\Items\" />
-    <None Remove="Views\Comments\" />
-    <None Remove="Views\Tags\" />
     <None Remove="Data\Services\" />
     <None Remove="Data\Interfaces\" />
     <None Remove="Data\Static\" />
@@ -24,8 +22,6 @@
     <Folder Include="Data\" />
     <Folder Include="Views\Collections\" />
     <Folder Include="Views\Items\" />
-    <Folder Include="Views\Comments\" />
-    <Folder Include="Views\Tags\" />
     <Folder Include="Data\Services\" />
     <Folder Include="Data\Interfaces\" />
     <Folder Include="Data\Static\" />

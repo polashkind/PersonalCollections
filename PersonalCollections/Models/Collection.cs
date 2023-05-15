@@ -1,8 +1,10 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Xml.Linq;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
+using PersonalCollections.Data.Enums;
 
 namespace PersonalCollections.Models
 {
@@ -22,10 +24,22 @@ namespace PersonalCollections.Models
 
         [Display(Name = "Subject")]
         [Required(ErrorMessage = "Subject is required")]
-        public string Subject { get; set; }
+        public ItemType Subject { get; set; }
 
         // Relationship
         public List<Item>? Items { get; set; }
+
+        [Display(Name = "Create date")]
+        public DateTime CreatedAt { get; set; }
+
+        [Display(Name = "Update date")]
+        public DateTime UpdatedAt { get; set; }
+
+        public string CreatedByUserId { get; set; }
+        public virtual ApplicationUser CreatedBy { get; set; }
+
+        public string UpdatedByUserId { get; set; }
+        public virtual ApplicationUser UpdatedBy { get; set; }
     } 
 }
 

@@ -22,6 +22,21 @@ namespace PersonalCollections.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
+            modelBuilder.Entity("CollectionItem", b =>
+                {
+                    b.Property<int>("CollectionId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("ItemsId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("CollectionId", "ItemsId");
+
+                    b.HasIndex("ItemsId");
+
+                    b.ToTable("CollectionItem");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
                 {
                     b.Property<string>("Id")
@@ -101,12 +116,10 @@ namespace PersonalCollections.Migrations
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
                     b.Property<string>("LoginProvider")
-                        .HasMaxLength(128)
-                        .HasColumnType("character varying(128)");
+                        .HasColumnType("text");
 
                     b.Property<string>("ProviderKey")
-                        .HasMaxLength(128)
-                        .HasColumnType("character varying(128)");
+                        .HasColumnType("text");
 
                     b.Property<string>("ProviderDisplayName")
                         .HasColumnType("text");
@@ -143,12 +156,10 @@ namespace PersonalCollections.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("LoginProvider")
-                        .HasMaxLength(128)
-                        .HasColumnType("character varying(128)");
+                        .HasColumnType("text");
 
                     b.Property<string>("Name")
-                        .HasMaxLength(128)
-                        .HasColumnType("character varying(128)");
+                        .HasColumnType("text");
 
                     b.Property<string>("Value")
                         .HasColumnType("text");
@@ -234,42 +245,37 @@ namespace PersonalCollections.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("CreatedByUserId")
+                        .HasColumnType("text");
+
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<string>("Subject")
-                        .IsRequired()
-                        .HasColumnType("text");
+                    b.Property<int>("Subject")
+                        .HasColumnType("integer");
 
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasMaxLength(20)
                         .HasColumnType("character varying(20)");
 
-                    b.HasKey("Id");
-
-                    b.ToTable("Collections");
-                });
-
-            modelBuilder.Entity("PersonalCollections.Models.Comment", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime>("CreatedAt")
+                    b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<string>("Text")
-                        .IsRequired()
+                    b.Property<string>("UpdatedByUserId")
                         .HasColumnType("text");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Comments");
+                    b.HasIndex("CreatedByUserId");
+
+                    b.HasIndex("UpdatedByUserId");
+
+                    b.ToTable("Collections");
                 });
 
             modelBuilder.Entity("PersonalCollections.Models.Item", b =>
@@ -280,65 +286,76 @@ namespace PersonalCollections.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("CollectionId")
-                        .HasColumnType("integer");
+                    b.Property<string>("Author")
+                        .IsRequired()
+                        .HasColumnType("text");
 
-                    b.Property<int>("CommentId")
-                        .HasColumnType("integer");
+                    b.Property<string>("BookGenre")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Brand")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("CreatedByUserId")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<int>("Likes")
+                    b.Property<string>("MovieGenre")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Producer")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<int>("Subject")
                         .HasColumnType("integer");
 
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("UpdatedByUserId")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateOnly>("Year")
+                        .HasColumnType("date");
+
                     b.HasKey("Id");
 
-                    b.HasIndex("CollectionId");
+                    b.HasIndex("CreatedByUserId");
 
-                    b.HasIndex("CommentId");
+                    b.HasIndex("UpdatedByUserId");
 
                     b.ToTable("Items");
                 });
 
-            modelBuilder.Entity("PersonalCollections.Models.Tag", b =>
+            modelBuilder.Entity("CollectionItem", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
+                    b.HasOne("PersonalCollections.Models.Collection", null)
+                        .WithMany()
+                        .HasForeignKey("CollectionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Tags");
-                });
-
-            modelBuilder.Entity("PersonalCollections.Models.Tag_Item", b =>
-                {
-                    b.Property<int>("ItemId")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("TagId")
-                        .HasColumnType("integer");
-
-                    b.HasKey("ItemId", "TagId");
-
-                    b.HasIndex("TagId");
-
-                    b.ToTable("Tags_Items");
+                    b.HasOne("PersonalCollections.Models.Item", null)
+                        .WithMany()
+                        .HasForeignKey("ItemsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -392,62 +409,49 @@ namespace PersonalCollections.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("PersonalCollections.Models.Item", b =>
-                {
-                    b.HasOne("PersonalCollections.Models.Collection", "Collection")
-                        .WithMany("Items")
-                        .HasForeignKey("CollectionId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("PersonalCollections.Models.Comment", "Comments")
-                        .WithMany("Items")
-                        .HasForeignKey("CommentId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Collection");
-
-                    b.Navigation("Comments");
-                });
-
-            modelBuilder.Entity("PersonalCollections.Models.Tag_Item", b =>
-                {
-                    b.HasOne("PersonalCollections.Models.Item", "Item")
-                        .WithMany("Tags_Items")
-                        .HasForeignKey("ItemId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("PersonalCollections.Models.Tag", "Tag")
-                        .WithMany("Tags_Items")
-                        .HasForeignKey("TagId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Item");
-
-                    b.Navigation("Tag");
-                });
-
             modelBuilder.Entity("PersonalCollections.Models.Collection", b =>
                 {
-                    b.Navigation("Items");
-                });
+                    b.HasOne("PersonalCollections.Models.ApplicationUser", "CreatedBy")
+                        .WithMany("CreatedCollections")
+                        .HasForeignKey("CreatedByUserId");
 
-            modelBuilder.Entity("PersonalCollections.Models.Comment", b =>
-                {
-                    b.Navigation("Items");
+                    b.HasOne("PersonalCollections.Models.ApplicationUser", "UpdatedBy")
+                        .WithMany("UpdatedCollections")
+                        .HasForeignKey("UpdatedByUserId");
+
+                    b.Navigation("CreatedBy");
+
+                    b.Navigation("UpdatedBy");
                 });
 
             modelBuilder.Entity("PersonalCollections.Models.Item", b =>
                 {
-                    b.Navigation("Tags_Items");
+                    b.HasOne("PersonalCollections.Models.ApplicationUser", "CreatedBy")
+                        .WithMany("CreatedItems")
+                        .HasForeignKey("CreatedByUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("PersonalCollections.Models.ApplicationUser", "UpdatedBy")
+                        .WithMany("UpdatedItems")
+                        .HasForeignKey("UpdatedByUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("CreatedBy");
+
+                    b.Navigation("UpdatedBy");
                 });
 
-            modelBuilder.Entity("PersonalCollections.Models.Tag", b =>
+            modelBuilder.Entity("PersonalCollections.Models.ApplicationUser", b =>
                 {
-                    b.Navigation("Tags_Items");
+                    b.Navigation("CreatedCollections");
+
+                    b.Navigation("CreatedItems");
+
+                    b.Navigation("UpdatedCollections");
+
+                    b.Navigation("UpdatedItems");
                 });
 #pragma warning restore 612, 618
         }
