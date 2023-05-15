@@ -30,7 +30,10 @@ namespace PersonalCollections.Data.Services
 
         public async Task<Collection?> GetById(int id, CancellationToken cancellationToken)
         {
-            var result = await _dbSet.AsNoTracking().FirstOrDefaultAsync(entity => entity.Id == id, cancellationToken);
+            var result = await _dbSet
+                .Include(c => c.CreatedBy)
+                .Include(c => c.UpdatedBy)
+                .FirstOrDefaultAsync(entity => entity.Id == id, cancellationToken);
             return result;
         }
     }
