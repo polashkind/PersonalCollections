@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Hosting;
 using PersonalCollections.Data.Static;
 using PersonalCollections.Models;
 
@@ -15,31 +16,35 @@ namespace PersonalCollections.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Tag_Item>()
-                .HasKey(ti => new
-                {
-                    ti.ItemId,
-                    ti.TagId
-                });
+            modelBuilder.Entity<Collection>()
+                .HasMany(c => c.Items)
+                .WithMany(i => i.Collection);
 
-            modelBuilder.Entity<Tag_Item>()
-                .HasOne(t => t.Tag)
-                .WithMany(ti => ti.Tags_Items)
-                .HasForeignKey(t => t.TagId);
+            modelBuilder.Entity<ApplicationUser>()
+                .HasMany(u => u.CreatedCollections)
+                .WithOne(c => c.CreatedBy)
+                .HasForeignKey(c => c.CreatedByUserId);
 
-            modelBuilder.Entity<Tag_Item>()
-                .HasOne(t => t.Item)
-                .WithMany(ti => ti.Tags_Items)
-                .HasForeignKey(t => t.ItemId);
+            modelBuilder.Entity<ApplicationUser>()
+                .HasMany(u => u.UpdatedCollections)
+                .WithOne(c => c.UpdatedBy)
+                .HasForeignKey(c => c.UpdatedByUserId);
+
+            modelBuilder.Entity<ApplicationUser>()
+                .HasMany(u => u.CreatedItems)
+                .WithOne(c => c.CreatedBy)
+                .HasForeignKey(c => c.CreatedByUserId);
+
+            modelBuilder.Entity<ApplicationUser>()
+                .HasMany(u => u.UpdatedItems)
+                .WithOne(c => c.UpdatedBy)
+                .HasForeignKey(c => c.UpdatedByUserId);
 
             base.OnModelCreating(modelBuilder);
         }
 
         public DbSet<Collection> Collections { get; set; }
         public DbSet<Item> Items { get; set; }
-        public DbSet<Comment> Comments { get; set; }
-        public DbSet<Tag> Tags { get; set; }
-        public DbSet<Tag_Item> Tags_Items { get; set; }
     }
 }
  
