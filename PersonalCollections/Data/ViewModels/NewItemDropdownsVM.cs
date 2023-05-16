@@ -14,7 +14,5 @@ namespace PersonalCollections.Data.ViewModels
         }
 
         public List<Collection> Collections { get; set; }
-        
     }
 }
-

@@ -14,7 +14,7 @@ namespace PersonalCollections.Data.Interfaces
         Task<Item?> Create(Item item, CancellationToken cancellationToken);
         Task Delete(Item item, CancellationToken cancellationToken);
 
-        Task Update(NewItemVM data);
+        Task Update(ItemVM data);
 
         Task<NewItemDropdownsVM> GetNewItemDropdownsValues();
     }

@@ -33,10 +33,10 @@ namespace PersonalCollections.Models
         public DateTime UpdatedAt { get; set; }
 
         public string CreatedByUserId { get; set; }
-        public virtual ApplicationUser CreatedBy { get; set; }
+        public virtual ApplicationUser? CreatedBy { get; set; }
 
         public string UpdatedByUserId { get; set; }
-        public virtual ApplicationUser UpdatedBy { get; set; }
+        public virtual ApplicationUser? UpdatedBy { get; set; }
 
 
         // Book

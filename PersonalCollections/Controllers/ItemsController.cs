@@ -1,5 +1,7 @@
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using PersonalCollections.Data.Enums;
 using PersonalCollections.Data.Interfaces;
 using PersonalCollections.Data.ViewModels;
 using PersonalCollections.Models;
@@ -8,10 +10,12 @@ namespace PersonalCollections.Controllers
 {
     public class ItemsController : Controller
     {
+        private readonly UserManager<ApplicationUser> _userManager;
         private readonly IItemsService _service;
 
-        public ItemsController(IItemsService service)
+        public ItemsController(UserManager<ApplicationUser> userManager, IItemsService service)
         {
+            _userManager = userManager;
             _service = service;
         }
 
@@ -21,18 +25,42 @@ namespace PersonalCollections.Controllers
             return View(allItems);
         }
 
-        public async Task<IActionResult> Create()
+        public IActionResult Create()
         {
-            return View();
+            var model = new ItemVM();
+            ViewBag.Subjects = Enum.GetValues(typeof(ItemType))
+                .Cast<ItemType>()
+                .Select(type => new SelectListItem
+                {
+                Value = type.ToString(),
+                Text = type.ToString()
+                });
+
+            return View(model);
         }
 
         [HttpPost]
         public async Task<IActionResult> Create(Item item, CancellationToken cancellationToken)
         {
+            ApplicationUser currentUser = await _userManager.GetUserAsync(User);
+
+            item.CreatedByUserId = currentUser.Id;
+            item.UpdatedByUserId = currentUser.Id;
+            item.CreatedAt = DateTime.UtcNow;
+            item.UpdatedAt = DateTime.UtcNow;
+
+            ModelState.Clear();
+            TryValidateModel(item);
+
             if (!ModelState.IsValid)
             {
+                foreach (var error in ModelState.Values.SelectMany(v => v.Errors))
+                {
+                    Console.WriteLine(error.ErrorMessage);
+                }
                 return View(item);
             }
+
             await _service.Create(item, cancellationToken);
             return RedirectToAction(nameof(Index));
         }
@@ -47,25 +75,25 @@ namespace PersonalCollections.Controllers
 
         public async Task<IActionResult> Edit(int id, CancellationToken cancellationToken)
         {
-            var itemDetails = await _service.GetById(id, cancellationToken);
-            if (itemDetails == null) return View("NotFound");
+            //var itemDetails = await _service.GetById(id, cancellationToken);
+            //if (itemDetails == null) return View("NotFound");
 
-            var response = new NewItemVM()
-            {
-                Id = itemDetails.Id,
-                Title = itemDetails.Title,
-                Description = itemDetails.Description,
-                CollectionId = itemDetails.CollectionId,
-            };
+            //var response = new NewItemVM()
+            //{
+            //    Id = itemDetails.Id,
+            //    Title = itemDetails.Title,
+            //    Description = itemDetails.Description,
+            //    //Collection = itemDetails.Collection,
+            //};
 
-            var itemDropdownsData = await _service.GetNewItemDropdownsValues();
-            ViewBag.Collections = new SelectList(itemDropdownsData.Collections, "Id", "Title");
+            //var itemDropdownsData = await _service.GetNewItemDropdownsValues();
+            //ViewBag.Collections = new SelectList(itemDropdownsData.Collections, "Id", "Title");
 
-            return View(response);
+            return View();
         }
 
         [HttpPost]
-        public async Task<IActionResult> Edit(int id, NewItemVM item, CancellationToken cancellationToken)
+        public async Task<IActionResult> Edit(int id, ItemVM item, CancellationToken cancellationToken)
         {
             if (id != item.Id) return View("NotFound");
 

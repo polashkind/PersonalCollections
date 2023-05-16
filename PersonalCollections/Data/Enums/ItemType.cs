@@ -3,9 +3,9 @@ namespace PersonalCollections.Data.Enums
 {
 	public enum ItemType
 	{
-		Book,
-		Movie,
-		Car
+        Book,
+        Movie,
+        Car
 	}
 }
 
