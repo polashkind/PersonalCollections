@@ -1,4 +1,7 @@
-﻿@model Item
+﻿@model PersonalCollections.Data.ViewModels.ItemVM
+@using PersonalCollections.Data.Enums
+@using PersonalCollections.Models
+@using PersonalCollections.Data.ViewModels
 
 @{
     ViewData["Title"] = "Add a New Item";
@@ -13,16 +16,61 @@
             <div class="col-md-8 offset-2">
                 <form asp-action="Create">
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Subject, new { @class = "control-label", @onchange = "changeSelect" });
+                        @Html.DropDownListFor(model => model.Subject, ViewBag.Subjects as IEnumerable<SelectListItem>, "Select type", new { @class = "form-control", id = "subject-dropdown" })
+                    </div>
 
                     <div class="form-group">
                         <label asp-for="Title" class="control-label"></label>
                         <input asp-for="Title" class="form-control" />
                         <span asp-validation-for="Title" class="text-danger"></span>
                     </div>
+
                     <div class="form-group">
                         <label asp-for="Description" class="control-label"></label>
                         <input asp-for="Description" class="form-control" />
                         <span asp-validation-for="Description" class="text-danger"></span>
+                    </div>
+                    <div id="book-fields-container" style="display: none;">
+                        <div class="form-group">
+                            <label asp-for="Author" class="control-label"></label>
+                            <input asp-for="Author" class="form-control" />
+                            <span asp-validation-for="Author" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label asp-for="BookGenre" class="control-label"></label>
+                            <input asp-for="BookGenre" class="form-control" />
+                            <span asp-validation-for="BookGenre" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label asp-for="Year" class="control-label"></label>
+                            <input asp-for="Year" class="form-control" />
+                            <span asp-validation-for="Year" class="text-danger"></span>
+                        </div>
+                    </div>
+
+                    <div id="car-fields-container" style="display: none;">
+                        <div class="form-group">
+                            <label asp-for="Brand" class="control-label"></label>
+                            <input asp-for="Brand" class="form-control" />
+                            <span asp-validation-for="Brand" class="text-danger"></span>
+                        </div>
+                    </div>
+
+                    <div id="movie-fields-container" style="display: none;">
+                        <div class="form-group">
+                            <label asp-for="Producer" class="control-label"></label>
+                            <input asp-for="Producer" class="form-control" />
+                            <span asp-validation-for="Producer" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="MovieGenre" class="control-label"></label>
+                            <input asp-for="MovieGenre" class="form-control" />
+                            <span asp-validation-for="MovieGenre" class="text-danger"></span>
+                        </div>
                     </div>
                     <div class="form-group">
                         <input type="submit" value="Create" class="btn btn-outline-success float-right" />
@@ -33,3 +81,39 @@
         </div>
     </div>
 </div>
+
+<script>
+    window.onload = function () {
+        $('#subject-dropdown').change(function () {
+            var subject = $(this).val();
+            switch (subject) {
+                case 'Book': {
+                    $('#book-fields-container').show();
+                    $('#car-fields-container').hide();
+                    $('#movie-fields-container').hide();
+
+                    return;
+                }
+                case 'Car': {
+                    $('#book-fields-container').hide();
+                    $('#car-fields-container').show();
+                    $('#movie-fields-container').hide();
+
+                    return;
+                }
+                case 'Movie': {
+                    $('#book-fields-container').hide();
+                    $('#car-fields-container').hide();
+                    $('#movie-fields-container').show();
+
+                    return;
+                }
+                default: {
+                    $('#book-fields-container').hide();
+                    $('#car-fields-container').hide();
+                    $('#movie-fields-container').hide();
+                }
+            }
+        });
+    }
+</script>
