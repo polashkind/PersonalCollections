@@ -1,38 +1,38 @@
 ﻿@model Item
-@using PersonalCollections.Data.Enums
-@using PersonalCollections.Models
-@using PersonalCollections.Data.ViewModels
+@using PersonalCollections.Data.Enums;
 
 @{
-    ViewData["Title"] = "Add a New Item";
+    ViewData["Title"] = "Delete Item";
 }
 
 <div class="row-text">
     <div class="col-md-8 offset-2">
         <p>
-            <h1>Add a New Item</h1>
+            <h1>Delete @Model.Title</h1>
         </p>
         <div class="row">
             <div class="col-md-8 offset-2">
-                <form asp-action="Create">
-                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                    <div class="form-group">
-                        @Html.LabelFor(model => model.Subject, new { @class = "control-label" })
-                        @Html.DropDownListFor(model => model.Subject, ViewBag.Subjects as IEnumerable<SelectListItem>, "Select type", new { @class = "form-control", id = "subject-dropdown" })
-                    </div>
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
-                    <div class="form-group">
-                        <label asp-for="Title" class="control-label"></label>
-                        <input asp-for="Title" class="form-control" />
-                        <span asp-validation-for="Title" class="text-danger"></span>
-                    </div>
+                <div class="form-group">
+                    <label asp-for="@Model.Subject" class="control-label"></label>
+                    <input asp-for="@Model.Subject" class="form-control" readonly />
+                    <span asp-validation-for="@Model.Subject" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Title" class="control-label"></label>
+                    <input asp-for="Title" class="form-control" />
+                    <span asp-validation-for="Title" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Description" class="control-label"></label>
+                    <input asp-for="Description" class="form-control" />
+                    <span asp-validation-for="Description" class="text-danger"></span>
+                </div>
+                @if (Model.Subject == ItemType.Book)
+                {
+                    <div id="book-fields-container">
 
-                    <div class="form-group">
-                        <label asp-for="Description" class="control-label"></label>
-                        <input asp-for="Description" class="form-control" />
-                        <span asp-validation-for="Description" class="text-danger"></span>
-                    </div>
-                    <div id="book-fields-container" style="display: none;">
                         <div class="form-group">
                             <label asp-for="Author" class="control-label"></label>
                             <input asp-for="Author" class="form-control" />
@@ -51,8 +51,10 @@
                             <span asp-validation-for="BookYear" class="text-danger"></span>
                         </div>
                     </div>
-
-                    <div id="car-fields-container" style="display: none;">
+                }
+                @if (Model.Subject == ItemType.Car)
+                {
+                    <div id="car-fields-container">
                         <div class="form-group">
                             <label asp-for="Brand" class="control-label"></label>
                             <input asp-for="Brand" class="form-control" />
@@ -65,8 +67,10 @@
                             <span asp-validation-for="CarYear" class="text-danger"></span>
                         </div>
                     </div>
-
-                    <div id="movie-fields-container" style="display: none;">
+                }
+                @if (Model.Subject == ItemType.Movie)
+                {
+                    <div id="movie-fields-container">
                         <div class="form-group">
                             <label asp-for="Producer" class="control-label"></label>
                             <input asp-for="Producer" class="form-control" />
@@ -77,54 +81,26 @@
                             <input asp-for="MovieGenre" class="form-control" />
                             <span asp-validation-for="MovieGenre" class="text-danger"></span>
                         </div>
+
                         <div class="form-group">
                             <label asp-for="MovieYear" class="control-label"></label>
                             <input asp-for="MovieYear" class="form-control" />
                             <span asp-validation-for="MovieYear" class="text-danger"></span>
                         </div>
                     </div>
+                }
+
+                @using (Html.BeginForm("Delete", "Items", new { id = Model.Id }, FormMethod.Post))
+                {
+                    @Html.AntiForgeryToken()
+
                     <div class="form-group">
-                        <input type="submit" value="Create" class="btn btn-outline-success float-right" />
-                        <a class="btn btn-outline-success float-right" asp-action="Index">Show All</a>
+                        <input type="submit" value="Delete" class="btn btn-danger" />
+                        @Html.ActionLink("Cancel", "Index", null, new { @class = "btn btn-default" })
                     </div>
-                </form>
+                }
             </div>
         </div>
     </div>
 </div>
 
-<script>
-    window.onload = function () {
-        $('#subject-dropdown').change(function () {
-            var subject = $(this).val();
-            switch (subject) {
-                case 'Book': {
-                    $('#book-fields-container').show();
-                    $('#car-fields-container').hide();
-                    $('#movie-fields-container').hide();
-
-                    return;
-                }
-                case 'Car': {
-                    $('#book-fields-container').hide();
-                    $('#car-fields-container').show();
-                    $('#movie-fields-container').hide();
-
-                    return;
-                }
-                case 'Movie': {
-                    $('#book-fields-container').hide();
-                    $('#car-fields-container').hide();
-                    $('#movie-fields-container').show();
-
-                    return;
-                }
-                default: {
-                    $('#book-fields-container').hide();
-                    $('#car-fields-container').hide();
-                    $('#movie-fields-container').hide();
-                }
-            }
-        });
-    }
-</script>

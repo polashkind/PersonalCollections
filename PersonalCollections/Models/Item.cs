@@ -47,11 +47,13 @@ namespace PersonalCollections.Models
         public string? BookGenre { get; set; }
 
         [Display(Name = "Year of publication")]
-        public DateOnly? Year { get; set; }
+        public DateOnly? BookYear { get; set; }
 
         // Car
         [Display(Name = "Brand")]
         public string? Brand { get; set; }
+        [Display(Name = "Year of car manufacture")]
+        public DateOnly? CarYear { get; set; }
 
         // Movie
         [Display(Name = "Producer")]
@@ -59,6 +61,9 @@ namespace PersonalCollections.Models
 
         [Display(Name = "Genre")]
         public string? MovieGenre { get; set; }
+
+        [Display(Name = "Release year")]
+        public DateOnly? MovieYear { get; set; }
     }
 }
 
