@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using PersonalCollections.Data;
@@ -11,9 +12,11 @@ using PersonalCollections.Data;
 namespace PersonalCollections.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230516224631_deleteExtraFile")]
+    partial class deleteExtraFile
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -294,14 +297,8 @@ namespace PersonalCollections.Migrations
                     b.Property<string>("BookGenre")
                         .HasColumnType("text");
 
-                    b.Property<DateOnly?>("BookYear")
-                        .HasColumnType("date");
-
                     b.Property<string>("Brand")
                         .HasColumnType("text");
-
-                    b.Property<DateOnly?>("CarYear")
-                        .HasColumnType("date");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
@@ -316,9 +313,6 @@ namespace PersonalCollections.Migrations
 
                     b.Property<string>("MovieGenre")
                         .HasColumnType("text");
-
-                    b.Property<DateOnly?>("MovieYear")
-                        .HasColumnType("date");
 
                     b.Property<string>("Producer")
                         .HasColumnType("text");
@@ -336,6 +330,9 @@ namespace PersonalCollections.Migrations
                     b.Property<string>("UpdatedByUserId")
                         .IsRequired()
                         .HasColumnType("text");
+
+                    b.Property<DateOnly?>("Year")
+                        .HasColumnType("date");
 
                     b.HasKey("Id");
 

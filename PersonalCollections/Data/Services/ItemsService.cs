@@ -2,8 +2,8 @@
 using System.Threading;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using PersonalCollections.Data.Enums;
 using PersonalCollections.Data.Interfaces;
-using PersonalCollections.Data.ViewModels;
 using PersonalCollections.Models;
 
 namespace PersonalCollections.Data.Services
@@ -31,9 +31,10 @@ namespace PersonalCollections.Data.Services
         public async Task<Item> GetById(int id, CancellationToken cancellationToken)
         {
             var result = await _dbSet
-                .Include(c => c.CreatedBy)
-                .Include(c => c.UpdatedBy)
+                .Include(i => i.CreatedBy)
+                .Include(i => i.UpdatedBy)
                 .FirstOrDefaultAsync(entity => entity.Id == id, cancellationToken);
+
             return result;
         }
 
@@ -44,36 +45,18 @@ namespace PersonalCollections.Data.Services
             return item;
         }
 
+        public async Task<Item?> Update(Item item, CancellationToken cancellationToken)
+        {
+            _context.Entry(item).State = EntityState.Modified;
+            _dbSet.Update(item);
+            await _context.SaveChangesAsync(cancellationToken);
+            return item;
+        }
+
         public async Task Delete(Item item, CancellationToken cancellationToken)
         {
             _dbSet.Remove(item);
             await _context.SaveChangesAsync(cancellationToken);
         }
-
-        public async Task<NewItemDropdownsVM> GetNewItemDropdownsValues()
-        {
-            var response = new NewItemDropdownsVM()
-            {
-                Collections = await _context.Collections.OrderBy(c => c.Title).ToListAsync(),
-            };
-
-            return response;
-        }
-
-        public async Task Update(ItemVM data)
-        {
-
-            var dbItem = await _context.Items.FirstOrDefaultAsync(i => i.Id == data.Id);
-
-            if (dbItem != null)
-            {
-                dbItem.Title = data.Title;
-                dbItem.Description = data.Description;
-                //dbItem.CollectionId = data.CollectionId;
-                await _context.SaveChangesAsync();
-            }
-
-        }
     }
 }
-
