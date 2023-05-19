@@ -1,0 +1,124 @@
+﻿@model Collection
+
+@{
+    ViewData["Title"] = "Edit Collection";
+}
+
+<div class="row-text">
+    <div class="col-md-8 offset-2">
+        <p>
+            <h1>Edit @Model.Title</h1>
+        </p>
+        <div class="row">
+            <div class="col-md-8 offset-2">
+                <form asp-action="Edit">
+                    <div class="form-group">
+                        <label asp-for="Title" class="control-label"></label>
+                        <input asp-for="Title" class="form-control" />
+                        <span asp-validation-for="Title" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Description" class="control-label"></label>
+                        <input asp-for="Description" class="form-control" />
+                        <span asp-validation-for="Description" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Subject" class="control-label"></label>
+                        <input asp-for="Subject" class="form-control" readonly />
+                        <span asp-validation-for="Subject" class="text-danger"></span>
+                    </div>
+                    <tbody>
+                        @{
+                            var collectionItems = Model.Items as List<Item>;
+                            @foreach (var item in collectionItems)
+                            {
+                            <tr class="text-center">
+                                <td class="align-middle">
+                                    @Html.DisplayFor(modelItem => item.Title)
+                                </td>
+                                <td class="align-middle">
+                                    @Html.DisplayFor(modelItem => item.Description)
+                                </td>
+                                <td class="align-middle">
+                                    @Html.DisplayFor(modelItem => item.CreatedAt)
+                                </td>
+                                <td class="align-middle">
+                                    @Html.DisplayFor(modelItem => item.CreatedBy.UserName)
+                                </td>
+                                <td class="align-middle">
+                                    <a class="btn btn-danger" asp-action="RemoveItemFromCollection" asp-route-itemId="@item.Id" asp-route-collectionId="@Model.Id"><i class="bi bi-trash"></i>Remove</a>
+                                </td>
+                            </tr>
+                            }
+                        }
+                    </tbody>
+                    <h5>Available Items for Collection:</h5>
+                    <tbody>
+                        @{
+                            var items = ViewBag.Items as List<Item>;
+
+                            @if (items != null && items.Any())
+                            {
+                            @foreach (var item in ViewBag.Items as List<Item>)
+                                {
+                                <tr class="text-center">
+                                    <td class="align-middle">
+                                        @Html.DisplayFor(modelItem => item.Title)
+                                    </td>
+                                    <td class="align-middle">
+                                        @Html.DisplayFor(modelItem => item.Description)
+                                    </td>
+                                    <td class="align-middle">
+                                        @Html.DisplayFor(modelItem => item.CreatedAt)
+                                    </td>
+                                    <td class="align-middle">
+                                        @Html.DisplayFor(modelItem => item.CreatedBy.UserName)
+                                    </td>
+                                    <td class="align-middle">
+                                        <a class="btn btn-outline-primary" asp-action="AddItemToCollection" asp-route-itemId="@item.Id" asp-route-collectionId="@Model.Id">
+                                            <i class="bi bi-pencil-square"></i>Add
+                                        </a>
+                                    </td>
+                                </tr>
+                                }
+                            }
+                            else
+                            {
+                                <p>No items found in this collection.</p>
+                            }
+                        }
+                    </tbody>
+                    @*<div>
+                        <h5>Available Items for Collection:</h5>
+                        @{
+                            var items = ViewBag.Items as List<Item>;
+
+                            @if (items != null && items.Any())
+                            {
+                                <div class="align-middle">
+                                    @foreach (var item in items)
+                                    {
+                                        <div class="text-center">
+                                            <div class="align-middle">@item.Title - @item.Description</div>
+                                            <a class="btn btn-outline-primary" asp-action="Add" asp-route-itemId="@item.Id" asp-route-collectionId="@Model.Id">
+                                                <i class="bi bi-pencil-square"></i>Add
+                                            </a>
+                                        </div>
+                                    }
+                                </div>
+                            }
+                            else
+                            {
+                                <p>No items found in this collection.</p>
+                            }
+                        }
+                    </div>*@
+                    <div class="form-group">
+                        <input type="submit" value="Update" class="btn btn-outline-success float-right" />
+                        <a class="btn btn-outline-secondary" asp-action="Index">Cancel</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

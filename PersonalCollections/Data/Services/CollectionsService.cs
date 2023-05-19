@@ -1,11 +1,13 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using PersonalCollections.Data.Interfaces;
 using PersonalCollections.Models;
+using System.Threading;
 
 namespace PersonalCollections.Data.Services
 {
-	public class CollectionsService : ICollectionsService
-	{
+    public class CollectionsService : ICollectionsService
+    {
         private readonly AppDbContext _context;
         protected readonly DbSet<Collection> _dbSet;
 
@@ -17,7 +19,9 @@ namespace PersonalCollections.Data.Services
 
         public async Task<IEnumerable<Collection>> GetAll(CancellationToken cancellationToken)
         {
-            var result = await _dbSet.Include(n => n.Items).ToListAsync(cancellationToken);
+            var result = await _dbSet
+                .Include(n => n.Items)
+                .ToListAsync(cancellationToken);
             return result;
         }
 
@@ -33,8 +37,23 @@ namespace PersonalCollections.Data.Services
             var result = await _dbSet
                 .Include(c => c.CreatedBy)
                 .Include(c => c.UpdatedBy)
+                .Include(c => c.Items)
                 .FirstOrDefaultAsync(entity => entity.Id == id, cancellationToken);
             return result;
+        }
+
+        public async Task<Collection?> Update(Collection collection, CancellationToken cancellationToken)
+        {
+            _context.Entry(collection).State = EntityState.Modified;
+            _dbSet.Update(collection);
+            await _context.SaveChangesAsync(cancellationToken);
+            return collection;
+        }
+
+        public async Task Delete(Collection collection, CancellationToken cancellationToken)
+        {
+            _dbSet.Remove(collection);
+            await _context.SaveChangesAsync(cancellationToken);
         }
     }
 }
