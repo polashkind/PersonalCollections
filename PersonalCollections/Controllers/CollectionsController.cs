@@ -157,7 +157,7 @@ namespace PersonalCollections.Controllers
         public async Task<IActionResult> Search(string query, CancellationToken cancellationToken)
         {
             var allCollections = await _service.GetAll(cancellationToken);
-            var result = allCollections.Where(c => query == null || string.Equals(c.Title, query, StringComparison.CurrentCultureIgnoreCase)).ToList();
+            var result = allCollections.Where(c => query == null || c.Title.IndexOf(query, 0, StringComparison.OrdinalIgnoreCase) != -1).ToList();
             return View(nameof(Index), result);
         }
     }
