@@ -153,5 +153,12 @@ namespace PersonalCollections.Controllers
             await _service.Delete(collection, cancellationToken);
             return RedirectToAction(nameof(Index));
         }
+
+        public async Task<IActionResult> Search(string query, CancellationToken cancellationToken)
+        {
+            var allCollections = await _service.GetAll(cancellationToken);
+            var result = allCollections.Where(c => query == null || string.Equals(c.Title, query, StringComparison.CurrentCultureIgnoreCase)).ToList();
+            return View(nameof(Index), result);
+        }
     }
 }
