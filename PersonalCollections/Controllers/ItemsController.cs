@@ -82,7 +82,7 @@ namespace PersonalCollections.Controllers
             return View(item);
         }
 
-        [HttpPost]
+        [HttpPost("{id}")]
         public async Task<IActionResult> Edit(Item item, CancellationToken cancellationToken)
         {
             ApplicationUser currentUser = await _userManager.GetUserAsync(User);
@@ -110,14 +110,7 @@ namespace PersonalCollections.Controllers
 
         public async Task<IActionResult> Delete(int id, CancellationToken cancellationToken)
         {
-            var itemDetails = await _service.GetById(id, cancellationToken);
-            if (itemDetails == null) return View("NotFound");
-            return View(itemDetails);
-        }
-
-        [HttpPost, ActionName("Delete")]
-        public async Task<IActionResult> DeleteConfirm(Item item, CancellationToken cancellationToken)
-        {
+            var item = await _service.GetById(id, cancellationToken);
             await _service.Delete(item, cancellationToken);
             return RedirectToAction(nameof(Index));
         }

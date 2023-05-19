@@ -28,12 +28,33 @@ namespace PersonalCollections.Data.Services
             return result;
         }
 
+        public async Task<IEnumerable<Item>> GetNonCollectionByType(ItemType type, List<Item> collectionItems, CancellationToken cancellationToken)
+        {
+            var result = await _dbSet
+                .Include(i => i.CreatedBy)
+                .Include(i => i.UpdatedBy)
+                .Where(item => item.Subject == type && !collectionItems.Contains(item))
+                .ToListAsync(cancellationToken);
+            return result;
+        }
+
         public async Task<Item> GetById(int id, CancellationToken cancellationToken)
         {
             var result = await _dbSet
                 .Include(i => i.CreatedBy)
                 .Include(i => i.UpdatedBy)
                 .FirstOrDefaultAsync(entity => entity.Id == id, cancellationToken);
+
+            return result;
+        }
+
+        public async Task<List<Item>> GetNonCollectionItems(List<Item> collectionItems, CancellationToken cancellationToken)
+        {
+            var result = await _dbSet
+                .Include(c => c.CreatedBy)
+                .Include(c => c.UpdatedBy)
+                .Where(item => !collectionItems.Contains(item))
+                .ToListAsync(cancellationToken);
 
             return result;
         }

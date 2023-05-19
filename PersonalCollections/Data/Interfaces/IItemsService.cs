@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using PersonalCollections.Models;
 using PersonalCollections.Data.ViewModels;
+using PersonalCollections.Data.Enums;
 
 namespace PersonalCollections.Data.Interfaces
 {
@@ -14,6 +15,7 @@ namespace PersonalCollections.Data.Interfaces
         Task<Item?> Create(Item item, CancellationToken cancellationToken);
         Task<Item?> Update(Item item, CancellationToken cancellationToken);
         Task Delete(Item item, CancellationToken cancellationToken);
+        Task<IEnumerable<Item>> GetNonCollectionByType(ItemType subject, List<Item> collectionItems, CancellationToken cancellationToken);
     }
 }
 
