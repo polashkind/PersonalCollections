@@ -34,7 +34,7 @@ namespace PersonalCollections.Migrations
 
                     b.HasIndex("ItemsId");
 
-                    b.ToTable("CollectionItem");
+                    b.ToTable("CollectionItem", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -277,7 +277,7 @@ namespace PersonalCollections.Migrations
 
                     b.HasIndex("UpdatedByUserId");
 
-                    b.ToTable("Collections");
+                    b.ToTable("Collections", (string)null);
                 });
 
             modelBuilder.Entity("PersonalCollections.Models.Item", b =>
@@ -343,7 +343,7 @@ namespace PersonalCollections.Migrations
 
                     b.HasIndex("UpdatedByUserId");
 
-                    b.ToTable("Items");
+                    b.ToTable("Items", (string)null);
                 });
 
             modelBuilder.Entity("CollectionItem", b =>
