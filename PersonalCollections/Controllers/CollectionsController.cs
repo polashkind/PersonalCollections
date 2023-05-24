@@ -4,6 +4,7 @@ using System.Data.Entity;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -30,6 +31,9 @@ namespace PersonalCollections.Controllers
 
         public async Task<IActionResult> Index(CancellationToken cancellationToken)
         {
+            ApplicationUser currentUser = await _userManager.GetUserAsync(User);
+
+            ViewBag.CurrentUser = currentUser;
             var result = await _service.GetAll(cancellationToken);
             return View(result);
         }
@@ -85,7 +89,9 @@ namespace PersonalCollections.Controllers
         public async Task<IActionResult> Edit(int id, CancellationToken cancellationToken)
         {
             var collection = await _service.GetById(id, cancellationToken);
+
             if (collection == null) return View("Not Found");
+
             var items = await _itemsService.GetNonCollectionByType(collection.Subject, collection.Items, cancellationToken);
             ViewBag.Items = items;
             
@@ -112,7 +118,6 @@ namespace PersonalCollections.Controllers
             var collection = await _service.GetById(collectionId, cancellationToken);
             var item = await _itemsService.GetById(itemId, cancellationToken);
 
-            // Add the item to the collection's Items list
             collection.Items.Remove(item);
 
             await _service.Update(collection, cancellationToken);

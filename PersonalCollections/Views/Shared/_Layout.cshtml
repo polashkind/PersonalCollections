@@ -25,13 +25,10 @@
                         </li>
 
                         <li class="nav-item dropdown">
-                            @if (User.IsInRole("User"))
-                            {
-                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
-                                   aria-haspopup="true" aria-expanded="false">
-                                    <i class="bi bi-gear"></i> Management
-                                </a>
-                            }
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
+                                aria-haspopup="true" aria-expanded="false">
+                                <i class="bi bi-gear"></i> Management
+                            </a>
 
                             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                                 <a class="dropdown-item" asp-controller="Items" asp-action="Index"><i class="bi bi-box"></i>Items</a>

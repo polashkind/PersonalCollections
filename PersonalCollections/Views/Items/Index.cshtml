@@ -37,9 +37,21 @@
                             @Html.DisplayFor(modelItem => item.Subject)
                         </td>
                         <td class="align-middle">
-                            <a class="btn btn-outline-primary" asp-controller="Items" asp-action="Edit" asp-route-id="@item.Id"><i class="bi bi-pencil-square"></i>Edit</a> |
-                            <a class="btn btn-outline-info" asp-controller="Items" asp-action="Details" asp-route-id="@item.Id"><i class="bi bi-eye"></i>Details</a> |
-                            <a class="btn btn-danger" asp-controller="Items" asp-action="Delete" asp-route-id="@item.Id"><i class="bi bi-trash"></i>Delete</a>
+                            @if (User.IsInRole("Admin") || item.CreatedByUserId == ViewBag.CurrentUser?.Id)
+                            {
+                                <a class="btn btn-outline-primary" asp-controller="Items" asp-action="Edit" asp-route-id="@item.Id">
+                                    <i class="bi bi-pencil-square"></i> Edit
+                                </a>
+                            } 
+
+                            <a class="btn btn-outline-info" asp-controller="Items" asp-action="Details" asp-route-id="@item.Id"><i class="bi bi-eye"></i> Details</a> 
+
+                            @if (User.IsInRole("Admin") || item.CreatedByUserId == ViewBag.CurrentUser?.Id)
+                            {
+                                <a class="btn btn-danger" asp-controller="Items" asp-action="Delete" asp-route-id="@item.Id">
+                                    <i class="bi bi-trash"></i> Delete
+                                </a>
+                            }
                         </td>
                     </tr>
                 }
@@ -48,8 +60,11 @@
     </div>
 </div>
 
-<div style="position: fixed; right: 25px; bottom: 80px;" class="text-white">
-    <a asp-controller="Items" asp-action="Create" class="btn btn-success">
-        <i class="bi bi-plus-circle"></i> Add New Item
-    </a>
-</div>
+@if (User.IsInRole("User") || User.IsInRole("Admin"))
+{
+    <div style="position: fixed; right: 25px; bottom: 80px;" class="text-white">
+        <a asp-controller="Items" asp-action="Create" class="btn btn-success">
+            <i class="bi bi-plus-circle"></i> Add New Item
+        </a>
+    </div>
+}

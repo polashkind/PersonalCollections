@@ -38,15 +38,21 @@
                     <div class="col-md-12">
                         <div class="card-footer ">
                             <p class="card-text">
-                                <a class="btn btn-outline-primary" asp-action="Edit" asp-route-id="@collection.Id">
-                                    <i class="bi bi-pencil-square"></i>Edit
-                                </a>
+                                @if (User.IsInRole("Admin") || collection.CreatedByUserId == ViewBag.CurrentUser?.Id)
+                                {
+                                    <a class="btn btn-outline-primary" asp-action="Edit" asp-route-id="@collection.Id">
+                                        <i class="bi bi-pencil-square"></i> Edit
+                                    </a>
+                                }
                                 <a class="btn btn-outline-info float-right" asp-controller="Collections" asp-action="Details" asp-route-id="@collection.Id">
-                                    <i class="bi bi-eye-fill"></i>Show Details
+                                    <i class="bi bi-eye-fill"></i> Show Details
                                 </a>
-                                <a class="btn btn-danger" asp-controller="Collections" asp-action="Delete" asp-route-id="@collection.Id">
-                                    <i class="bi bi-trash"></i>Delete
-                                </a>
+                                @if (User.IsInRole("Admin") || collection.CreatedByUserId == ViewBag.CurrentUser?.Id)
+                                {
+                                    <a class="btn btn-danger" asp-controller="Collections" asp-action="Delete" asp-route-id="@collection.Id">
+                                        <i class="bi bi-trash"></i> Delete
+                                    </a>
+                                }
                             </p>
                         </div>
                     </div>
@@ -55,9 +61,11 @@
         </div>
     }
 </div>
-
+@if (User.IsInRole("User") || User.IsInRole("Admin"))
+{
 <div style="position: fixed; right: 25px; bottom: 80px;" class="text-white">
     <a asp-controller="Collections" asp-action="Create" class="btn btn-success">
-        <i class="bi bi-plus-circle"></i> Add New 
+        <i class="bi bi-plus-circle"></i> Add New
     </a>
 </div>
+}
