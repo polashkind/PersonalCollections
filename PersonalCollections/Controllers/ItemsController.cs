@@ -21,6 +21,9 @@ namespace PersonalCollections.Controllers
 
         public async Task<IActionResult> Index(CancellationToken cancellationToken)
         {
+            ApplicationUser currentUser = await _userManager.GetUserAsync(User);
+
+            ViewBag.CurrentUser = currentUser;
             var allItems = await _service.GetAll(cancellationToken);
             return View(allItems);
         }
@@ -82,7 +85,7 @@ namespace PersonalCollections.Controllers
             return View(item);
         }
 
-        [HttpPost("{id}")]
+        [HttpPost]
         public async Task<IActionResult> Edit(Item item, CancellationToken cancellationToken)
         {
             ApplicationUser currentUser = await _userManager.GetUserAsync(User);
@@ -113,6 +116,13 @@ namespace PersonalCollections.Controllers
             var item = await _service.GetById(id, cancellationToken);
             await _service.Delete(item, cancellationToken);
             return RedirectToAction(nameof(Index));
+        }
+
+        public async Task<IActionResult> Search(string query, CancellationToken cancellationToken)
+        {
+            var allItems = await _service.GetAll(cancellationToken);
+            var result = allItems.Where(c => query == null || c.Title.IndexOf(query, 0, StringComparison.OrdinalIgnoreCase) != -1).ToList();
+            return View(nameof(Index), result);
         }
     }
 }
