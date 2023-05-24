@@ -47,7 +47,17 @@
                     <input asp-for="UpdatedAt" class="form-control" readonly />
                     <span asp-validation-for="UpdatedAt" class="text-danger"></span>
                 </div>
-
+                <div class="form-group">
+                    <label asp-for="Items" class="control-label"></label>
+                    @foreach (var item in Model.Items)
+                    {
+                        <ul>
+                            <li>
+                                @Html.DisplayFor(modelItem => item.Title)
+                            </li>
+                        </ul>
+                    }
+                </div>
                 <div class="form-group">
                     <a class="btn btn-outline-secondary" asp-action="Index">Show All</a>
                 </div>
