@@ -43,6 +43,7 @@ namespace PersonalCollections.Data.Services
             var result = await _dbSet
                 .Include(i => i.CreatedBy)
                 .Include(i => i.UpdatedBy)
+                .Include(i => i.Comments)
                 .FirstOrDefaultAsync(entity => entity.Id == id, cancellationToken);
 
             return result;

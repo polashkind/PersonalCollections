@@ -40,11 +40,22 @@ namespace PersonalCollections.Data
                 .WithOne(c => c.UpdatedBy)
                 .HasForeignKey(c => c.UpdatedByUserId);
 
+            modelBuilder.Entity<Comment>()
+                .HasOne(c => c.Item)
+                .WithMany(i => i.Comments)
+                .HasForeignKey(c => c.ItemId);
+
+            modelBuilder.Entity<ApplicationUser>()
+                .HasMany(u => u.CreatedComments)
+                .WithOne(c => c.CreatedBy)
+                .HasForeignKey(c => c.CreatedByUserId);
+
             base.OnModelCreating(modelBuilder);
         }
 
         public DbSet<Collection> Collections { get; set; }
         public DbSet<Item> Items { get; set; }
+        public DbSet<Comment> Comments { get; set; }
     }
 }
  

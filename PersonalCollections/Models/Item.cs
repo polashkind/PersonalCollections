@@ -38,6 +38,8 @@ namespace PersonalCollections.Models
         public string UpdatedByUserId { get; set; }
         public virtual ApplicationUser? UpdatedBy { get; set; }
 
+        public virtual List<Comment>? Comments { get; set; }
+
 
         // Book
         [Display(Name = "Author")]
