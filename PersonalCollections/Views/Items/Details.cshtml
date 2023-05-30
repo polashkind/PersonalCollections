@@ -101,9 +101,12 @@
                             {
                                 <div class="comment-body">
                                     <p>@comment.Content</p>
-                                    <a class="btn btn-danger" asp-controller="Items" asp-action="DeleteComment" asp-route-commentId="@comment.Id" asp-route-itemId="@Model.Id">
-                                        <i class="bi bi-trash"></i>
-                                    </a>
+                                    @if (User.IsInRole("Admin") || comment.CreatedByUserId == ViewBag.CurrentUser?.Id)
+                                    {
+                                        <a class="btn btn-danger" asp-controller="Items" asp-action="DeleteComment" asp-route-commentId="@comment.Id" asp-route-itemId="@Model.Id">
+                                            <i class="bi bi-trash"></i>
+                                        </a>
+                                    }
                                 </div>
                                 <small class="text-muted">
                                     Posted by @comment.CreatedBy on @comment.CreatedAt

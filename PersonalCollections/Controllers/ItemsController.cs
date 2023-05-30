@@ -75,7 +75,9 @@ namespace PersonalCollections.Controllers
         public async Task<IActionResult> Details(int id, CancellationToken cancellationToken)
         {
             var itemDetails = await _service.GetById(id, cancellationToken);
+            ApplicationUser currentUser = await _userManager.GetUserAsync(User);
 
+            ViewBag.CurrentUser = currentUser;
             if (itemDetails == null) return View("Not Found");
 
             return View(itemDetails);
