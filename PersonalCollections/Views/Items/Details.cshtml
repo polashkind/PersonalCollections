@@ -12,88 +12,130 @@
         </p>
         <div class="row">
             <div class="col-md-8 offset-2">
-                <form asp-action="Details">
-                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
-                    <div class="form-group">
-                        <label asp-for="@Model.Subject" class="control-label"></label>
-                        <input asp-for="@Model.Subject" class="form-control" readonly />
-                        <span asp-validation-for="@Model.Subject" class="text-danger"></span>
-                    </div>
-                    <div class="form-group">
-                        <label asp-for="Title" class="control-label"></label>
-                        <input asp-for="Title" class="form-control" readonly />
-                        <span asp-validation-for="Title" class="text-danger"></span>
-                    </div>
-                    <div class="form-group">
-                        <label asp-for="Description" class="control-label"></label>
-                        <input asp-for="Description" class="form-control" readonly />
-                        <span asp-validation-for="Description" class="text-danger"></span>
-                    </div>
-                    @if (Model.Subject == ItemType.Book)
-                    {
-                        <div id="book-fields-container">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
-                            <div class="form-group">
-                                <label asp-for="Author" class="control-label"></label>
-                                <input asp-for="Author" class="form-control" readonly />
-                                <span asp-validation-for="Author" class="text-danger"></span>
-                            </div>
+                <div class="form-group">
+                    <label asp-for="@Model.Subject" class="control-label"></label>
+                    <input asp-for="@Model.Subject" class="form-control" readonly />
+                </div>
+                <div class="form-group">
+                    <label asp-for="Title" class="control-label"></label>
+                    <input asp-for="Title" class="form-control" readonly />
+                    <span asp-validation-for="Title" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Description" class="control-label"></label>
+                    <input asp-for="Description" class="form-control" readonly />
+                    <span asp-validation-for="Description" class="text-danger"></span>
+                </div>
+                @if (Model.Subject == ItemType.Book)
+                {
+                    <div id="book-fields-container">
 
-                            <div class="form-group">
-                                <label asp-for="BookGenre" class="control-label"></label>
-                                <input asp-for="BookGenre" class="form-control" readonly />
-                                <span asp-validation-for="BookGenre" class="text-danger"></span>
-                            </div>
-
-                            <div class="form-group">
-                                <label asp-for="BookYear" class="control-label"></label>
-                                <input asp-for="BookYear" class="form-control" readonly />
-                                <span asp-validation-for="BookYear" class="text-danger"></span>
-                            </div>
+                        <div class="form-group">
+                            <label asp-for="Author" class="control-label"></label>
+                            <input asp-for="Author" class="form-control" readonly />
+                            <span asp-validation-for="Author" class="text-danger"></span>
                         </div>
-                    }
-                    @if (Model.Subject == ItemType.Car)
-                    {
-                        <div id="car-fields-container">
-                            <div class="form-group">
-                                <label asp-for="Brand" class="control-label"></label>
-                                <input asp-for="Brand" class="form-control" readonly />
-                                <span asp-validation-for="Brand" class="text-danger"></span>
-                            </div>
 
-                            <div class="form-group">
-                                <label asp-for="CarYear" class="control-label"></label>
-                                <input asp-for="CarYear" class="form-control" readonly />
-                                <span asp-validation-for="CarYear" class="text-danger"></span>
-                            </div>
+                        <div class="form-group">
+                            <label asp-for="BookGenre" class="control-label"></label>
+                            <input asp-for="BookGenre" class="form-control" readonly />
+                            <span asp-validation-for="BookGenre" class="text-danger"></span>
                         </div>
-                    }
-                    @if (Model.Subject == ItemType.Movie)
-                    {
-                        <div id="movie-fields-container">
-                            <div class="form-group">
-                                <label asp-for="Producer" class="control-label"></label>
-                                <input asp-for="Producer" class="form-control" readonly />
-                                <span asp-validation-for="Producer" class="text-danger"></span>
-                            </div>
-                            <div class="form-group">
-                                <label asp-for="MovieGenre" class="control-label"></label>
-                                <input asp-for="MovieGenre" class="form-control" readonly />
-                                <span asp-validation-for="MovieGenre" class="text-danger"></span>
-                            </div>
 
-                            <div class="form-group">
-                                <label asp-for="MovieYear" class="control-label"></label>
-                                <input asp-for="MovieYear" class="form-control" readonly />
-                                <span asp-validation-for="MovieYear" class="text-danger"></span>
-                            </div>
+                        <div class="form-group">
+                            <label asp-for="BookYear" class="control-label"></label>
+                            <input asp-for="BookYear" class="form-control" readonly />
+                            <span asp-validation-for="BookYear" class="text-danger"></span>
                         </div>
-                    }
-                    <div class="form-group">
-                        <a class="btn btn-outline-success float-right" asp-action="Index">Cancel</a>
                     </div>
-                </form>
+                }
+                @if (Model.Subject == ItemType.Car)
+                {
+                    <div id="car-fields-container">
+                        <div class="form-group">
+                            <label asp-for="Brand" class="control-label"></label>
+                            <input asp-for="Brand" class="form-control" readonly />
+                            <span asp-validation-for="Brand" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label asp-for="CarYear" class="control-label"></label>
+                            <input asp-for="CarYear" class="form-control" readonly />
+                            <span asp-validation-for="CarYear" class="text-danger"></span>
+                        </div>
+                    </div>
+                }
+                @if (Model.Subject == ItemType.Movie)
+                {
+                    <div id="movie-fields-container">
+                        <div class="form-group">
+                            <label asp-for="Producer" class="control-label"></label>
+                            <input asp-for="Producer" class="form-control" readonly />
+                            <span asp-validation-for="Producer" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="MovieGenre" class="control-label"></label>
+                            <input asp-for="MovieGenre" class="form-control" readonly />
+                            <span asp-validation-for="MovieGenre" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="MovieYear" class="control-label"></label>
+                            <input asp-for="MovieYear" class="form-control" readonly />
+                            <span asp-validation-for="MovieYear" class="text-danger"></span>
+                        </div>
+
+                    </div>
+                }
+
+                <div class="card card-outline-secondary my-4">
+                    <div class="card-header">
+                        Comments
+                    </div>
+                    <div class="card-body">
+                        @if (Model.Comments != null && Model.Comments.Count > 0)
+                        {
+                            foreach (var comment in Model.Comments)
+                            {
+                                <div class="comment-body">
+                                    <p>@comment.Content</p>
+                                    <a class="btn btn-danger" asp-controller="Items" asp-action="DeleteComment" asp-route-commentId="@comment.Id" asp-route-itemId="@Model.Id">
+                                        <i class="bi bi-trash"></i>
+                                    </a>
+                                </div>
+                                <small class="text-muted">
+                                    Posted by @comment.CreatedBy on @comment.CreatedAt
+                                </small>
+                                <hr />
+                            }
+                        }
+                        else
+                        {
+                            <p>There are no comments on this Item.</p>
+                            <hr />
+                        }
+                    </div>
+                </div>
+
+                @if (User.Identity.IsAuthenticated)
+                {
+                    <form id="commentForm" asp-action="AddCommentToItem">
+                        <input type="hidden" name="ItemId" value="@Model.Id" />
+                        <label class="control-label">Write Your Comment:</label>
+                        <textarea class="form-control" rows="3" name="Comment" placeholder="Leave your comment..."></textarea>
+                        <input type="submit" value="Post Comment" id="btnComment" />
+                    </form>
+                }
+                else
+                {
+                    <div class="text-black-50">You must be login to leave a comment</div>
+                }
+
+                <div class="form-group">
+                    <a class="btn btn-outline-success float-right" asp-action="Index">Cancel</a>
+                </div>
             </div>
         </div>
     </div>

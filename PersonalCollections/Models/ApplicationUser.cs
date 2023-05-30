@@ -18,5 +18,6 @@ namespace PersonalCollections.Models
         public List<Collection>? UpdatedCollections { get; set; }
         public List<Item>? CreatedItems { get; set; }
         public List<Item>? UpdatedItems { get; set; }
+        public List<Comment>? CreatedComments { get; set; }
     }
 }
